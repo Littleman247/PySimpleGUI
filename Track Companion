@@ -56,7 +56,7 @@ def main():
     #===================================================================================================
         if button == "Javelin":
             print("Selected Javelin")
-            show_running_window(javelin_button)
+            show_Javelin_Window(javelin_button)
  
     #===================================================================================================
         if button == "Shotput":
@@ -161,19 +161,25 @@ def show_running_window(update_button):
 
 def show_Javelin_Window(javelin_button):
     dist_Display = sg.Text("000.00")
-    dist_Button = sg.RButton("Submit", size=(180, 25))
+    submit_Button = sg.RButton("Submit", size=(180, 25))
+    name_Button = sg.InputText("", key="name")
+    dist_Button = sg.InputText("",key="dist")
 
     dist_layout = [
                 [dist_Display],
-                [dist_Button]
+                [name_Button,dist_Button]
+                [submit_Button]
                 ]
 
     dist_window = sg.Window("Distance").Layout(dist_layout)
     while True:
         dist_button, dist_value = dist_window.Read(timeout=0)
 
+#         
         if dist_button == "Submit":
-            print("test workis
+            print("test")
+            
+            
         
     
 
