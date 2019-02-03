@@ -1,134 +1,96 @@
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 from datetime import datetime
 from time import sleep
- 
+
+
 def main():
-    blank_button = sg.Button(button_color=('light gray','light gray'),disabled=True,size=(180, 25))
+    blank_button = sg.Button(button_color=("light gray", "light gray"), disabled=True, size=(20, 1))
     ###################################################################################################################
     message = sg.Text("Welcome, select a sport or untility")
     ####################################################################################################################
-    swimming_button = sg.RButton("Swimming", size=(180, 25))
-    shotput_button = sg.RButton("Shotput", size=(180, 25))
-    running_button = sg.ReadFormButton("Running",size=(180, 25))
-    javelin_button = sg.ReadFormButton("Javelin",size=(180, 25))
-    high_button = sg.ReadFormButton("High Jump", size=(180, 25))
-    long_button = sg.ReadFormButton("Long Jump",size=(180, 25))
-    sparing_button = sg.ReadFormButton("Sparing", size=(180, 25))
-    lifting_button = sg.ReadFormButton("Weight lifting",size=(180, 25))
-    volleyball_button = sg.ReadFormButton("Volley ball", size=(180, 25))
-    basketball_button = sg.ReadFormButton("Basket Ball", size=(180, 25))
-    archery_button = sg.ReadFormButton("Archery", size=(180, 25))
-    carnival_button = sg.ReadFormButton("Carnival or Sports Day", size=(180, 25))
+    swimming_button = sg.Button("Swimming", size=(20, 1), key="Swimming")
+    shotput_button = sg.Button("Shotput", size=(20, 1), key="Shotput")
+    running_button = sg.Button("Running", size=(20, 1), key="Running")
+    javelin_button = sg.Button("Javelin", size=(20, 1), key="Javelin")
+    high_button = sg.Button("High Jump", size=(20, 1), key="High Jump")
+    long_button = sg.Button("Long Jump", size=(20, 1), key="Long Jump")
+    sparing_button = sg.Button("Sparing", size=(20, 1), key="Sparing")
+    lifting_button = sg.Button("Weight lifting", size=(20, 1), key="Weight lifting")
+    chess_button = sg.Button("Chess", size=(20, 1), key="Chess")
+    volleyball_button = sg.Button("Volley ball", size=(20, 1), key="Volley ball")
+    basketball_button = sg.Button("Basket Ball", size=(20, 1), key="Basket Ball")
+    archery_button = sg.Button("Archery", size=(20, 1), key="Archery")
     ####################################################################################################################
     rows = [
-                [message],
-                [swimming_button, shotput_button],
-                [running_button, javelin_button],
-                [high_button, long_button],
-                [sparing_button, lifting_button],
-                [volleyball_button,basketball_button],
-                [archery_button],
-                [sg.Text("Special Events")],
-                [carnival_button],
-                [blank_button],
-                [blank_button, sg.Exit(button_color=('black','red'),size=(180,25))]
- 
-            ]
+        [message],
+        [swimming_button, shotput_button],
+        [running_button, javelin_button],
+        [high_button, long_button],
+        [sparing_button, lifting_button],
+        [volleyball_button, basketball_button],
+        [archery_button],
+        [sg.Text("Special Events")],
+        # [carnival_button],
+        [blank_button],
+        [blank_button, sg.Exit(button_color=("black", "red"), size=(20, 1))]
+
+    ]
     ####################################################################################################################
- 
- 
+
+    button_description_dict = {"Swimming":(swimming_button, show_timer_window),
+                               "Running": (running_button, show_timer_window),
+                               "Javelin": (javelin_button, show_distance_window),
+                               "Shotput": (shotput_button, show_distance_window),
+                               "High Jump": (high_button,  show_distance_window),
+                               "Long Jump": (long_button,  show_distance_window),
+                               "Sparing": (sparing_button, show_points_window),
+                               "Weight Ligting": (lifting_button,show_points_window),
+                               "Volley Ball": (volleyball_button, show_points_window),
+                               "Basket Ball": (basketball_button, show_points_window),
+                               "Archery": (archery_button, show_points_window)
+                               }
+
     #################################################################################################################
     window = sg.Window("MAIN WINDOW").Layout(rows)
     # window.Layout(rows).Read()
- 
+
     while True:
         button, value = window.Read()
-    #===================================================================================================
-        if button == "Swimming":
-            print("Selected Swimming")
-            show_running_window(running_button)
- 
-    #===================================================================================================
-        if button == "Running":
-            print("Selected Running")
-            show_running_window(running_button)
- 
-    #===================================================================================================
-        if button == "Javelin":
-            print("Selected Javelin")
-            show_Javelin_Window(javelin_button)
- 
-    #===================================================================================================
-        if button == "Shotput":
-            print("Selected Shotput")
-            
- 
-    #===================================================================================================
-        if button == "High Jump":
-            print("Selected High Jump")
- 
-    #===================================================================================================
-        if button == "Long Jump":
-            print("Selected Long Jump")
- 
-    #===================================================================================================
-        if button == "Sparing":
-            print("Selected Sparing")
- 
-    #===================================================================================================
-        if button == "Weight lifting":
-            print("Selected Weight lifting")
- 
-    #===================================================================================================
-        if button == "Chess":
-            print("Selected Chess")
- 
-    #===================================================================================================
-        if button == "Volley ball":
-            print("Selected Volley ball")
- 
-    #===================================================================================================
-        if button == "Basket Ball":
-            print("Selected Basket Ball")
- 
-    #===================================================================================================
-        if button == "Archery":
-            print("Selected Archery")
- 
-    #===================================================================================================
-        if button == "Carnival or Sports Day":
-            print("Selected Carnival or Sports Day")
-    #===================================================================================================
-        if button == 'Quit' or button == 'Exit':
-            break
- 
-        # sleep(0.001)
- 
-    window.Close()  # Don't forget to close your window!
- 
-def show_running_window(update_button):
-    runningDisplay = sg.Text("0:00")
+        if button in button_description_dict:
+            info = button_description_dict[button]
+            func = info[1]
+            func(button, info[0])
 
-    runningButton = sg.RButton("Start", size=(180, 25))
- 
- 
+        # ===================================================================================================
+        if button == "Quit" or button == "Exit":
+            break
+
+
+        # sleep(0.001)
+
+    window.Close()  # Don"t forget to close your window!
+
+
+def show_timer_window(text, update_button):
+    runningDisplay = sg.Text("0:00")
+    runningButton = sg.Button("Start", size=(20, 1))
+
     running_layout = [
-                    [runningDisplay],
-                    [runningButton],
-                    [sg.RButton("lap", size=(180,25))],
-                    [sg.RButton("Running Window Close", button_color=('black', 'red'), size=(180,25))]
-                ]
- 
+        [runningDisplay],
+        [runningButton],
+        [sg.Button("lap", size=(20, 1))],
+        [sg.Button("Close", button_color=("black", "red"), size=(20, 1))]
+    ]
+
     running_window = sg.Window("Running").Layout(running_layout)
- 
+
     running = False
     started = datetime.now()
- 
+
     while True:
- 
- 
-        run_button, run_value = running_window.Read(timeout=0)
- 
+
+        run_button, run_value = running_window.Read(timeout=100)
+
         if running:
             current = datetime.now()
             elapsed = current - started
@@ -139,51 +101,110 @@ def show_running_window(update_button):
             )
             if run_button == "lap":
                 print("Elapsed Time: ", str(elapsed))
- 
+
         if run_button == "Start":
             started = datetime.now()
             print("Started at ", str(started))
             runningButton.Update(text="Stop")
             running = True
- 
+
         if run_button == "Stop":
             runningButton.Update(text="Start")
             print("Your time was " + str(elapsed))
             running = False
- 
-        if run_button == "Running Window Close":
+
+        if run_button == "Close" or run_button is None:
             print("Stopping the clock and closing the running window.")
             runningButton.Update(text="Start")
             running = False
-            update_button.Update(text="Running (" + str(elapsed) + ")")
+
+            update_button.Update(text=text+"(" + str(elapsed) + ")")
             running_window.Close()
             break
 
-def show_Javelin_Window(javelin_button):
-    dist_Display = sg.Text("000.00")
-    submit_Button = sg.RButton("Submit", size=(180, 25))
-    name_Button = sg.InputText("", key="name")
-    dist_Button = sg.InputText("",key="dist")
 
-    dist_layout = [
-                [dist_Display],
-                [name_Button,dist_Button]
-                [submit_Button]
-                ]
+def show_distance_window(text, update_button):
+    dist_result_log = []
+    display = sg.Text("Distance Window ")
+    message = sg.Text("Enter Results")
+    results_output = sg.Text('')  # where you're displaying the results
 
-    dist_window = sg.Window("Distance").Layout(dist_layout)
+    layout = [
+        [display],
+        [message],
+        [sg.Input("Name", key="name"), sg.Input("Results", key="result")],
+        [sg.Button("Submit")],
+        [sg.Text("Result Log")],
+        [results_output]
+    ]
+
+    distance_window = sg.Window("Distance").Layout(layout)
     while True:
-        dist_button, dist_value = dist_window.Read(timeout=0)
+        button, value = distance_window.Read()
+        if button is None:
+            break
+        if button == "Submit":
+            dist_result_log.append(value['name'])
+            print(dist_result_log)
+            result = '\n'.join(dist_result_log)
+            results_output.Update(result)
 
-#         
-        if dist_button == "Submit":
-            print("test")
-            
-            
-        
-    
 
 
-    
-if __name__ == '__main__':
-    main()
+def show_points_window(update_button, text):
+    display_player_1 = sg.Text("0", size=(20, 1))
+    P1 = 0
+    display_player_2 = sg.Text("0", size=(20, 1))
+    P2 = 0
+    record_results = []
+    layout = [
+        [sg.Text("")],
+        [sg.Text("player 1", size=(20, 1)), sg.Text("player 2", size=(20, 1))],
+        [display_player_1, display_player_2],
+        [sg.ReadFormButton("Player 2:+1", key=("p1_+1"), size=(20, 1)),
+         sg.ReadFormButton("Player 2:+1", key=("p2_+1"), size=(20, 1))],
+        [sg.ReadFormButton("Player 1: +2", key=("p1_+2"), size=(20, 1)),
+         sg.ReadFormButton("Player 2: +2", key=("p2_+2"), size=(20, 1))],
+        [sg.ReadFormButton("Player 1: +3", key=("p1_+3"), size=(20, 1)),
+         sg.ReadFormButton("Player 2: +3", key=("p2_+3"), size=(20, 1))]
+    ]
+    window = sg.Window("Points_test")
+    window.Layout(layout)
+    while True:
+        button, value = window.Read()
+
+        if button is None:
+            break
+
+        if button == "p1_+1":
+            P1 = P1 + 1
+            display_player_1.Update(P1)
+            print("player 1: " + str(P1))
+
+        if button == "p1_+2":
+            P1 = P1 + 2
+            display_player_1.Update(P1)
+            print("player 1: " + str(P1))
+
+        if button == "p1_+3":
+            P1 = P1 + 3
+            display_player_1.Update(P1)
+            print("player 1: " + str(P1))
+
+        if button == "p2_+1":
+            P2 = P2 + 1
+            display_player_2.Update(P2)
+            print("player 2: " + str(P2))
+
+        if button == "p2_+2":
+            P2 = P2 + 2
+            display_player_2.Update(P2)
+            print("player 2: " + str(P2))
+
+        if button == "p1_+3":
+            P2 = P2 + 3
+            display_player_2.Update(P2)
+            print("player 1: " + str(P2))
+
+
+main()
